@@ -12,7 +12,7 @@ class EventController extends Controller
     public function index() {
         $events = Event::latest()->paginate(6);
 
-        return Inertia::render('EventManagement', [
+        return Inertia::render('EventManagement/Index', [
             'events' => $events
         ]);
     }

@@ -1,6 +1,6 @@
 import Modal from "@/Components/Modal";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import {
     Alert,
     Button,
@@ -8,6 +8,8 @@ import {
     CardActions,
     CardContent,
     IconButton,
+    Pagination,
+    Stack,
     TextField,
 } from "@mui/material";
 import { useState } from "react";
@@ -25,6 +27,8 @@ export default function EventManagement() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
     const [selectedEventId, setSelectedEventId] = useState(null);
+
+    console.log(events);
 
     // Add event Modal state
     const addEventModalOpen = () => {
@@ -323,6 +327,30 @@ export default function EventManagement() {
                                 ))}
                             </Grid>
                         </div>
+                    </div>
+                    <div className="my-8 flex justify-center">
+                        {events.links.map((link) =>
+                            link.url ? (
+                                <Link
+                                    key={link.label}
+                                    href={link.url}
+                                    dangerouslySetInnerHTML={{
+                                        __html: link.label,
+                                    }}
+                                    className={`p-1 mx-1 ${
+                                        link.active ? "text-blue-600" : ""
+                                    }`}
+                                />
+                            ) : (
+                                <span
+                                    key={link.label}
+                                    dangerouslySetInnerHTML={{
+                                        __html: link.label,
+                                    }}
+                                    className="p-1 mx-1 text-slate-300"
+                                ></span>
+                            )
+                        )}
                     </div>
                 </div>
             </div>
