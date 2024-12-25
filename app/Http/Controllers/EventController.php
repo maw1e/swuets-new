@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
+    public function index() {
+        $events = Event::latest()->paginate(6);
+
+        return Inertia::render('EventManagement', [
+            'events' => $events
+        ]);
+    }
+
     public function store(Request $request) {
         $fields = $request->validate([
             'name' => ['required'],
@@ -20,6 +29,14 @@ class EventController extends Controller
 
         Event::create($fields);
 
-        return redirect()->route('event-management')->with('success', 'Event created successfully!');
+        return redirect()->route('event-management.index')->with('success', 'Event created successfully!');
+    }
+
+    public function destroy(Event $event, $id) {
+        $event = Event::findorFail($id);
+
+        $event->delete();
+
+        return redirect()->route('event-management.index')->with('success', 'Event deleted successfully!');
     }
 }

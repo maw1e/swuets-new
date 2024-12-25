@@ -1,19 +1,32 @@
 import Modal from "@/Components/Modal";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import { Alert, Button, IconButton, TextField } from "@mui/material";
+import {
+    Alert,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    IconButton,
+    TextField,
+} from "@mui/material";
 import { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
+import Grid from "@mui/material/Grid2";
 
 export default function EventManagement() {
     const page = usePage();
-
-    // Modal state
+    const { events } = page.props;
     const [addEventDialogOpen, setAddEventDialogOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
+    const [selectedEventId, setSelectedEventId] = useState(null);
+
+    // Add event Modal state
     const addEventModalOpen = () => {
         setAddEventDialogOpen(true);
     };
@@ -21,8 +34,17 @@ export default function EventManagement() {
         setAddEventDialogOpen(false);
     };
 
+    // Delete event dialog state
+    const deleteEventModalOpen = (eventId) => {
+        setSelectedEventId(eventId);
+        setDeleteEventDialogOpen(true);
+    };
+    const deleteEventModalClose = () => {
+        setDeleteEventDialogOpen(false);
+        setSelectedEventId(null);
+    };
+
     // Snackbar state
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const snackbarClose = () => {
         setSnackbarOpen(false);
     };
@@ -40,7 +62,14 @@ export default function EventManagement() {
     );
 
     // Add Event
-    const { data, setData, post, processing, errors } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        delete: destroy,
+    } = useForm({
         name: "",
         date: null,
         location: "",
@@ -56,6 +85,19 @@ export default function EventManagement() {
                 setSnackbarOpen(true);
             },
         });
+    };
+
+    const deleteEvent = () => {
+        if (selectedEventId) {
+            destroy(route("event-management.destroy", selectedEventId), {
+                onSuccess: () => {
+                    setDeleteEventDialogOpen(false);
+                    setSnackbarOpen(true);
+                    setSelectedEventId(null);
+                    console.log("Event deleted");
+                },
+            });
+        }
     };
 
     return (
@@ -178,7 +220,7 @@ export default function EventManagement() {
 
                                     <div className="flex justify-end gap-4 mt-4">
                                         <Button
-                                            variant="contained"
+                                            variant="outlined"
                                             color="error"
                                             onClick={addEventModalClose}
                                         >
@@ -198,9 +240,88 @@ export default function EventManagement() {
                         </Modal>
                     </div>
 
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    <div className="overflow-hidden bg-white">
                         <div className="p-6 text-gray-900">
-                            You're logged in!
+                            <Grid container spacing={3}>
+                                {events.data.map((event) => (
+                                    <Grid xs={12} sm={6} md={4} key={event.id}>
+                                        <Card sx={{ minWidth: 372 }}>
+                                            <div className="p-2">
+                                                <CardContent>
+                                                    <h1 className="text-lg font-bold">
+                                                        {event.name}
+                                                    </h1>
+                                                    <p>{event.date}</p>
+                                                    <p>{event.location}</p>
+                                                    <p>{event.description}</p>
+                                                </CardContent>
+                                                <CardActions>
+                                                    <Button
+                                                        size="small"
+                                                        variant="contained"
+                                                    >
+                                                        View
+                                                    </Button>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        color="error"
+                                                        onClick={() =>
+                                                            deleteEventModalOpen(
+                                                                event.id
+                                                            )
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                    <Modal
+                                                        show={
+                                                            deleteEventDialogOpen
+                                                        }
+                                                        onClose={
+                                                            deleteEventModalClose
+                                                        }
+                                                    >
+                                                        <div className="p-8">
+                                                            <h1 className="text-2xl font-bold mb-4">
+                                                                Delete Event
+                                                            </h1>
+
+                                                            <p>
+                                                                Are you sure you
+                                                                want to delete
+                                                                this event?
+                                                            </p>
+                                                            <div className="flex justify-end gap-4 mt-4">
+                                                                <Button
+                                                                    variant="outlined"
+                                                                    color="error"
+                                                                    onClick={
+                                                                        deleteEventModalClose
+                                                                    }
+                                                                >
+                                                                    Cancel
+                                                                </Button>
+                                                                <Button
+                                                                    variant="contained"
+                                                                    color="error"
+                                                                    onClick={() =>
+                                                                        deleteEvent(
+                                                                            event.id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Delete
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    </Modal>
+                                                </CardActions>
+                                            </div>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                            </Grid>
                         </div>
                     </div>
                 </div>

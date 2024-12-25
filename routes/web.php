@@ -23,8 +23,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
 
-    Route::inertia('/event-management', 'EventManagement')->name('event-management');
+    // Route::inertia('/event-management', 'EventManagement')->name('event-management');
     Route::post('/event-management', [EventController::class, 'store'])->name('event-management.store');
+    Route::get('/event-management', [EventController::class, 'index'])->name('event-management.index');
+    Route::delete('/event-management/{id}', [EventController::class, 'destroy'])->name('event-management.destroy');
 });
 
 require __DIR__.'/auth.php';
