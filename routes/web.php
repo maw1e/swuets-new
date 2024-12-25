@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
 
     Route::inertia('/event-management', 'EventManagement')->name('event-management');
+    Route::post('/event-management', [EventController::class, 'store'])->name('event-management.store');
 });
 
 require __DIR__.'/auth.php';
