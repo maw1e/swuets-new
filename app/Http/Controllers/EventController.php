@@ -32,8 +32,8 @@ class EventController extends Controller
         return redirect()->route('event-management.index')->with('success', 'Event created successfully!');
     }
 
-    public function destroy(Event $event, $id) {
-        $event = Event::findorFail($id);
+    public function destroy(Event $event, Request $request) {
+        $event = Event::findorFail($request->id);
 
         $event->delete();
 
