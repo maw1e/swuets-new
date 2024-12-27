@@ -32,6 +32,14 @@ class EventController extends Controller
         return redirect()->route('event-management.index')->with('success', 'Event created successfully!');
     }
 
+    public function show(Event $event) {
+        $contingents = $event->contingents;
+        return Inertia::render('EventManagement/ShowEvent', [
+            'events' => $event,
+            'contingents' => $contingents
+        ]);
+    }
+
     public function destroy(Event $event, Request $request) {
         $event = Event::findorFail($request->id);
 

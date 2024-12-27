@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contingent extends Model
 {
-    protected $fillable = ['event_id', 'name', 'age',];
+    protected $fillable = ['name', 'age','event_id'];
 
     public function event() {
         return $this->belongsTo(Event::class);

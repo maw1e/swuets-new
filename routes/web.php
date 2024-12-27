@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\ContingentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
 
 Route::get('/', function () {
     return Inertia::render('Home', [
@@ -25,8 +27,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Route::inertia('/event-management', 'EventManagement')->name('event-management');
     Route::get('/event-management', [EventController::class, 'index'])->name('event-management.index');
+    Route::get('/event-management/{event}', [EventController::class, 'show'])->name('event-managmeent.show');
     Route::post('/event-management', [EventController::class, 'store'])->name('event-management.store');
     Route::delete('/event-management/{id}', [EventController::class, 'destroy'])->name('event-management.destroy');
+
+    Route::post('/contingents', [ContingentController::class, 'store'])->name('contingents.store');
+    Route::get('/contingents', [ContingentController::class, 'index'])->name('contingents.index');
 });
 
 require __DIR__.'/auth.php';

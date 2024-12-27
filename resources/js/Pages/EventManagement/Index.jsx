@@ -1,23 +1,8 @@
 import Modal from "@/Components/Modal";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
-import {
-    Alert,
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    IconButton,
-    Pagination,
-    Stack,
-    TextField,
-} from "@mui/material";
-import { useState } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Snackbar from "@mui/material/Snackbar";
-import CloseIcon from "@mui/icons-material/Close";
+import { Button, Card, CardActions, CardContent } from "@mui/material";
+
 import Grid from "@mui/material/Grid2";
 import AddEventButton from "./Partials/AddEventButton";
 import DeleteButton from "./Partials/DeleteButton";
@@ -27,25 +12,26 @@ export default function EventManagement() {
 
     const { events } = page.props;
 
-    console.log(events);
-    console.log(page.props.flash);
+    // console.log(events);
+    console.log(page);
 
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Event Management
-                </h2>
+                <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                        Event Management
+                    </h2>
+                    <div className="flex justify-end">
+                        <AddEventButton />
+                    </div>
+                </div>
             }
         >
             <Head title="Event Management" />
 
             <div className="py-12">
                 <div className="flex flex-col justify-center mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="flex justify-end mb-4">
-                        <AddEventButton />
-                    </div>
-
                     <div className="overflow-hidden bg-white">
                         <div className="p-6 text-gray-900">
                             {events.data.length === 0 ? (
@@ -80,12 +66,16 @@ export default function EventManagement() {
                                                         </p>
                                                     </CardContent>
                                                     <CardActions>
-                                                        <Button
-                                                            size="small"
-                                                            variant="contained"
+                                                        <Link
+                                                            href={`/event-management/${event.id}`}
                                                         >
-                                                            View
-                                                        </Button>
+                                                            <Button
+                                                                size="small"
+                                                                variant="contained"
+                                                            >
+                                                                View
+                                                            </Button>
+                                                        </Link>
                                                         <DeleteButton
                                                             event={event}
                                                         />
