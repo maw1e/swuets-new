@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import AddContingentsForm from "@/Pages/EventManagement/Partials/AddContingentForm";
+import AddContingentsForm from "@/Pages/EventManagement/Contingents/AddContingentForm";
 import { usePage } from "@inertiajs/react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -17,6 +17,7 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
+import DeleteContingentBtn from "@/Pages/EventManagement/Contingents/DeleteContingentBtn";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -102,13 +103,9 @@ const EventTabs = ({ contingents }) => {
                                             >
                                                 <EditIcon fontSize="inherit" />
                                             </IconButton>
-                                            <IconButton
-                                                size="large"
-                                                color="error"
-                                                aria-label="delete"
-                                            >
-                                                <DeleteIcon fontSize="inherit" />
-                                            </IconButton>
+                                            <DeleteContingentBtn
+                                                contingent={contingent}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))}

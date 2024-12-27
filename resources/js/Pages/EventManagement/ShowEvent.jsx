@@ -2,17 +2,6 @@ import EventTabs from "@/Components/EventManagement/EventTabs";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 
-import {
-    Button,
-    IconButton,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-} from "@mui/material";
 import React from "react";
 
 const ShowEvent = () => {

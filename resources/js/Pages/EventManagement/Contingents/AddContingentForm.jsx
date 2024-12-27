@@ -38,8 +38,6 @@ const AddContingentsForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log("Submitting data:", data);
-
         post(route("contingents.store"), {
             onSuccess: () => {
                 setData("contingents", [{ name: "", age: "" }]);
@@ -98,14 +96,6 @@ const AddContingentsForm = () => {
                                                 e.target.value
                                             )
                                         }
-                                        error={
-                                            !!errors[
-                                                `contingents.${index}.name`
-                                            ]
-                                        }
-                                        helperText={
-                                            errors[`contingents.${index}.name`]
-                                        }
                                         fullWidth
                                     />
 
@@ -120,12 +110,6 @@ const AddContingentsForm = () => {
                                                 "age",
                                                 e.target.value
                                             )
-                                        }
-                                        error={
-                                            !!errors[`contingents.${index}.age`]
-                                        }
-                                        helperText={
-                                            errors[`contingents.${index}.age`]
                                         }
                                         fullWidth
                                     />

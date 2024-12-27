@@ -30,8 +30,16 @@ class ContingentController extends Controller
             
         } catch (\Exception $e) {
             return back()->withErrors([
-                'error' => $e->getMessage()
+                'error' => 'The fields are required'
             ]);
         }
+    }
+
+    public function destroy(Contingent $contingent, Request $request) {
+        $contingent = Contingent::findorFail($request->id);
+
+        $contingent->delete();
+
+        return redirect()->back()->with('success', 'Contingent deleted successfull!');
     }
 }

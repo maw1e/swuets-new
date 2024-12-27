@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/contingents', [ContingentController::class, 'store'])->name('contingents.store');
     Route::get('/contingents', [ContingentController::class, 'index'])->name('contingents.index');
+    Route::delete('/contingents/{id}', [ContingentController::class, 'destroy'])->name('contingents.destroy');
 });
 
 require __DIR__.'/auth.php';
